@@ -1,4 +1,5 @@
 #include "day.hpp"
+#include "organism.hpp"
 
 OrganismDay::OrganismDay(const State & state)
 {
@@ -15,7 +16,11 @@ std::vector<std::shared_ptr<Organism>> OrganismDay::getEatenOrganisms() const
 
 void OrganismDay::eatOrganism(const std::shared_ptr<Organism> & organism)
 {
-    eatenOrganisms.push_back(organism);
+  const State current = getCurrentState();
+  uint64_t newEnergy = current.getEnergy() + organism->getMass() / 2;
+  eatenOrganisms.push_back(organism);
+
+  addState(State(current.getLocation(), newEnergy, current.isAlive()));
 }
 
 State OrganismDay::getCurrentState() const
@@ -34,4 +39,19 @@ void OrganismDay::die()
     addState(State(current.getLocation(), current.getEnergy(), false));
     isAlive = false;
     timeOfDeath = std::chrono::high_resolution_clock::now();
+}
+
+#include <iostream>
+void OrganismDay::move(const Location &location, double mass, double speed)
+{
+  const State current = getCurrentState();
+  double newEnergy = current.getEnergy() - 0.5 * mass * pow(speed, 2);
+  if (newEnergy < 0.01)
+  {
+      die();
+  }
+  else
+  {
+    addState(State(location, newEnergy, current.isAlive()));
+  }
 }

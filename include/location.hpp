@@ -2,40 +2,29 @@
 #define __LOCATION_HPP__
 
 #include <cstdint>
-
-enum class Orientation {
-  North,
-  South,
-  East,
-  West,
-  NorthEast,
-  NorthWest,
-  SouthEast,
-  SouthWest
-};
+#include <string>
 
 class Location
 {
 public:
     Location();
-    Location(uint32_t x, uint32_t y, Orientation orientation);
+    Location(uint64_t x, uint64_t y);
     Location(const Location&) = default;
     Location(Location&&) = default;
     void changeLocation(uint32_t x);
     void changeLocation(uint32_t x, uint32_t y);
-    void changeLocation(uint32_t x, uint32_t y, Orientation orientation);
-    void changeOrientation(Orientation orientation);
-    inline uint32_t getX();
-    inline uint32_t getY();
-    inline Orientation getOrientation();
+    std::string toString() const;
+    uint32_t getX() const;
+    uint32_t getY() const;
 
     bool operator==(const Location &);
-    Location& operator=(Location &) & = default;
+    bool operator<(const Location &) const;
+    bool operator>(const Location &) const;
+    Location& operator=(const Location &) = default;
     Location& operator=(Location &&) && = default;
 
   private:
-    uint32_t x, y;
-    Orientation orientation;
+    uint64_t x, y;
 };
 
 #endif

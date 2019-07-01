@@ -6,8 +6,8 @@
 #include <chrono>
 #include "state.hpp"
 
-using TimePoint = std::chrono::high_resolution_clock::time_point;
 class Organism;
+using TimePoint = std::chrono::high_resolution_clock::time_point;
 
 class OrganismDay
 {
@@ -20,6 +20,7 @@ public:
     State getCurrentState() const;
     void addState(const State & state);
     void die();
+    void move(const Location & location, double mass, double speed);
 
 private:
 

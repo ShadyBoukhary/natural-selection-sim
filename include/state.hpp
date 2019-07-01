@@ -3,6 +3,7 @@
 
 #define DEFAULT_ENERGY 1800
 #include "location.hpp"
+#include <random>
 
 class State
 {

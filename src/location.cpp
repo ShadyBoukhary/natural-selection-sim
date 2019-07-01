@@ -1,9 +1,9 @@
 #include "location.hpp"
 
-Location::Location() : x(0), y(0), orientation(Orientation::North) {}
+Location::Location() : x(0), y(0){}
 
-Location::Location(uint32_t x, uint32_t y, Orientation orientation) :
-    x(x), y(y), orientation(orientation) {}
+Location::Location(uint64_t x, uint64_t y) :
+    x(x), y(y){}
 
 void Location::changeLocation(uint32_t x) { this->x = x; }
 
@@ -13,26 +13,32 @@ void Location::changeLocation(uint32_t x, uint32_t y)
     this->y = y;
 }
 
-void Location::changeLocation(uint32_t x, uint32_t y, Orientation orientation)
+std::string Location::toString() const
 {
-    changeLocation(x, y);
-    this->orientation = orientation;
+    return "{x: " + std::to_string(x) + ", y: " + std::to_string(y) + "}";
 }
 
-void Location::changeOrientation(Orientation orientation)
-{
-    this->orientation = orientation;
+uint32_t Location::getX() const {
+  return x;
 }
 
-uint32_t Location::getX() { return x; }
+uint32_t Location::getY() const { return y; }
 
-uint32_t Location::getY() { return y; }
-
-Orientation Location::getOrientation() { return orientation; }
 
 bool Location::operator==(const Location & rhs)
 {
-    return x == rhs.x && y == rhs.y && orientation == rhs.orientation;
+    return x == rhs.x && y == rhs.y;
 }
 
-
+bool Location::operator<(const Location & rhs) const
+{
+  if (x != rhs.x)
+    return x < rhs.x;
+  return y < rhs.y;
+}
+bool Location::operator>(const Location & rhs) const
+{
+  if (x != rhs.x)
+    return x > rhs.x;
+  return y > rhs.y;
+}
